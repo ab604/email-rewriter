@@ -81,6 +81,52 @@
         
         <div>
             <label for="originalEmail">Original Email:</label>
+            <textarea id="originalEmail" placeholder="Compose or paste your email here..."></textarea>
+        </div>
+
+        <div class="controls">
+            <select id="toneSelect">
+                <option value="growth mindset">Growth Mindset</option>
+                <option value="passive aggressive">PassAgg</option>
+                <option value="hard boiled detective">Philip Marlowe</option>
+                <option value="dungeons and dragons">D&D</option>
+                <option value="professional">Professional</option>
+                <option value="friendly">Friendly</option>
+                <option value="formal">Formal</option>
+                <option value="casual">Casual</option>
+            </select>
+            <button onclick="rewriteEmail()">Rewrite Email</button>
+        </div>
+
+        <div class="loading" id="loadingIndicator">
+            Rewriting your email...
+        </div>
+
+        <div class="error" id="errorMessage">
+            An error occurred. Please try again.
+        </div>
+
+        <div>
+            <label for="rewrittenEmail">Rewritten Email:</label>
+            <textarea id="rewrittenEmail" readonly placeholder="Your rewritten email will appear here..."></textarea>
+        </div>
+    </div>
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Rewriter</title>
+    <style>
+        /* (Previous CSS remains the same) */
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Email Rewriter</h1>
+        
+        <div>
+            <label for="originalEmail">Original Email:</label>
             <textarea id="originalEmail" placeholder="Paste your email here..."></textarea>
         </div>
 
@@ -113,6 +159,10 @@
     </div>
 
     <script>
+        // GitHub Actions will inject this secret during build/deployment
+        const API_KEY = import.meta.env.VITE_GROQ_API_KEY || process.env.GROQ_API_KEY;
+
+
         async function rewriteEmail() {
             const originalEmail = document.getElementById('originalEmail').value;
             const tone = document.getElementById('toneSelect').value;
@@ -120,50 +170,77 @@
             const errorMessage = document.getElementById('errorMessage');
             const rewrittenEmailArea = document.getElementById('rewrittenEmail');
             
+            // Input validation
             if (!originalEmail.trim()) {
                 alert('Please enter an email to rewrite.');
                 return;
             }
+
+            // Sanitize input to prevent XSS
+            const sanitizedEmail = DOMPurify.sanitize(originalEmail);
+            const sanitizedTone = DOMPurify.sanitize(tone);
 
             loadingIndicator.style.display = 'block';
             errorMessage.style.display = 'none';
             rewrittenEmailArea.value = '';
 
             try {
-                // Read API key from file
-                const response = await fetch('api_key');
-                const grokApi = await response.text();
+                // Check if API key is available
+                if (!API_KEY) {
+                    throw new Error('API key is not configured');
+                }
+
+                // Use fetch with error handling
                 const apiResponse = await fetch('https://api.groq.com/openai/v1/chat/completions', {
                     method: 'POST',
                     headers: {
-                        'Authorization': `Bearer ${grokApi.trim()}`,
+                        'Authorization': `Bearer ${API_KEY}`,
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
                         model: "mixtral-8x7b-32768",
                         messages: [{
                             role: "user",
-                            content: `Please rewrite the following email in a ${tone} tone:\n\n${originalEmail}`
+                            content: `Please rewrite the following email in a ${sanitizedTone} tone:\n\n${sanitizedEmail}`
                         }],
                         temperature: 0.7,
                         max_tokens: 2000
                     })
                 });
 
+                // Check for HTTP errors
+                if (!apiResponse.ok) {
+                    const errorBody = await apiResponse.text();
+                    throw new Error(`HTTP error! status: ${apiResponse.status}, ${errorBody}`);
+                }
+
                 const data = await apiResponse.json();
                 
                 if (data.choices && data.choices[0]) {
-                    rewrittenEmailArea.value = data.choices[0].message.content.trim();
+                    // Sanitize output
+                    rewrittenEmailArea.value = DOMPurify.sanitize(
+                        data.choices[0].message.content.trim()
+                    );
                 } else {
                     throw new Error('Invalid response from API');
                 }
             } catch (error) {
                 console.error('Error:', error);
+                errorMessage.textContent = `An error occurred: ${error.message}`;
                 errorMessage.style.display = 'block';
             } finally {
                 loadingIndicator.style.display = 'none';
             }
         }
+
+        // Add event listener for form submission
+        document.querySelector('form')?.addEventListener('submit', (e) => {
+            e.preventDefault();
+            rewriteEmail();
+        });
     </script>
+    
+    <!-- Add DOMPurify for input sanitization -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.10/purify.min.js"></script>
 </body>
 </html>
