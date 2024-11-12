@@ -81,7 +81,7 @@
         
         <div>
             <label for="originalEmail">Original Email:</label>
-            <textarea id="originalEmail" placeholder="Paste your email here..."></textarea>
+            <textarea id="originalEmail" placeholder="Compose or paste your email here..."></textarea>
         </div>
 
         <div class="controls">
@@ -91,7 +91,7 @@
                 <option value="hard boiled detective">Philip Marlowe</option>
                 <option value="dungeons and dragons">D&D</option>
                 <option value="meow like a cat">Meow</option>
-                <option value="one of T.S. Eliot's cats">Cats</option>
+                <option value="one of T.S. Eliot's cats"></option>
                 <option value="professional">Professional</option>
                 <option value="friendly">Friendly</option>
                 <option value="formal">Formal</option>
@@ -113,6 +113,46 @@
             <textarea id="rewrittenEmail" readonly placeholder="Your rewritten email will appear here..."></textarea>
         </div>
     </div>
+
+<!-- </head>
+<body>
+    <div class="container">
+        <h1>Email Rewriter</h1>
+        
+        <div>
+            <label for="originalEmail">Original Email:</label>
+            <textarea id="originalEmail" placeholder="Paste your email here..."></textarea>
+        </div>
+
+        <div class="controls">
+            <select id="toneSelect">
+                <option value="growth mindset">Growth Mindset</option>
+                <option value="passive aggressive">PassAgg</option>
+                <option value="hard boiled detective">Philip Marlowe</option>
+                <option value="dungeons and dragons">D&D</option>
+                <option value="meow like a cat">Meow</option>
+                <option value="one of T.S. Eliot's cats"></option>
+                <option value="professional">Professional</option>
+                <option value="friendly">Friendly</option>
+                <option value="formal">Formal</option>
+                <option value="casual">Casual</option>
+            </select>
+            <button onclick="rewriteEmail()">Rewrite Email</button>
+        </div>
+
+        <div class="loading" id="loadingIndicator">
+            Rewriting your email...
+        </div>
+
+        <div class="error" id="errorMessage">
+            An error occurred. Please try again.
+        </div>
+
+        <div>
+            <label for="rewrittenEmail">Rewritten Email:</label>
+            <textarea id="rewrittenEmail" readonly placeholder="Your rewritten email will appear here..."></textarea>
+        </div>
+    </div> -->
 
     <script>
         // GitHub Actions will inject this secret during build/deployment
