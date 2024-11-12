@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Rewriter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 200px;
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            resize: vertical;
+        }
+
+        .controls {
+            margin: 20px 0;
+        }
+
+        select, button {
+            padding: 8px 16px;
+            margin: 5px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        select {
+            background-color: white;
+            border: 1px solid #ddd;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 10px 0;
+        }
+
+        .error {
+            color: red;
+            margin: 10px 0;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Email Rewriter</h1>
+        
+        <div>
+            <label for="originalEmail">Original Email:</label>
+            <textarea id="originalEmail" placeholder="Paste your email here..."></textarea>
+        </div>
+
+        <div class="controls">
+            <select id="toneSelect">
+                <option value="growth mindset">Growth Mindset</option>
+                <option value="passive aggressive">PassAgg</option>
+                <option value="hard boiled detective">Philip Marlowe</option>
+                <option value="dungeons and dragons">D&D</option>
+                <option value="professional">Professional</option>
+                <option value="friendly">Friendly</option>
+                <option value="formal">Formal</option>
+                <option value="casual">Casual</option>
+            </select>
+            <button onclick="rewriteEmail()">Rewrite Email</button>
+        </div>
+
+        <div class="loading" id="loadingIndicator">
+            Rewriting your email...
+        </div>
+
+        <div class="error" id="errorMessage">
+            An error occurred. Please try again.
+        </div>
+
+        <div>
+            <label for="rewrittenEmail">Rewritten Email:</label>
+            <textarea id="rewrittenEmail" readonly placeholder="Your rewritten email will appear here..."></textarea>
+        </div>
+    </div>
+
+    <script>
+        async function rewriteEmail() {
+            const originalEmail = document.getElementById('originalEmail').value;
+            const tone = document.getElementById('toneSelect').value;
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            const errorMessage = document.getElementById('errorMessage');
+            const rewrittenEmailArea = document.getElementById('rewrittenEmail');
+
+            if (!originalEmail.trim()) {
+                alert('Please enter an email to rewrite.');
+                return;
+            }
+        
+            loadingIndicator.style.display = 'block';
+            errorMessage.style.display = 'none';
+            rewrittenEmailArea.value = '';
+        
+            try {
+                // Fetch API key from file
+                const response = await fetch('api_key');
+                const grokApi = await response.text().trim();
+            
+                // Alternative: Use a proxy server to handle API calls
+                const proxyResponse = await fetch('/api/rewrite', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        apiKey: grokApi,
+                        tone: tone,
+                        originalEmail: originalEmail
+                    })
+                });
+            
+                const data = await proxyResponse.json();
+
+                if (data.rewrittenEmail) {
+                    rewrittenEmailArea.value = data.rewrittenEmail;
+                } else {
+                    throw new Error('Invalid response from API');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                errorMessage.style.display = 'block';
+            } finally {
+                loadingIndicator.style.display = 'none';
+            }
+        }
+
+    </script>
+</body>
+</html>
