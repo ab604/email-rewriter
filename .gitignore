@@ -1,6 +1,7 @@
 api_key
 .env
 old-workflows/
+old-scripts/
 node_modules
 dist
 .env.local
@@ -8,3 +9,4 @@ dist
 .env.test.local
 .env.production.local
 .vscode/
+vite-project/

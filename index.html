@@ -89,6 +89,9 @@
                 <option value="growth mindset">Growth Mindset</option>
                 <option value="passive aggressive">PassAgg</option>
                 <option value="hard boiled detective">Philip Marlowe</option>
+                <option value="victorian urchin">Victorian Urchin</option>
+                <option value="meow like a cat">Meow</option>
+                <option value="Mr. Mistoffelees">Cats</option>
                 <option value="dungeons and dragons">D&D</option>
                 <option value="professional">Professional</option>
                 <option value="friendly">Friendly</option>
@@ -110,12 +113,9 @@
             <label for="rewrittenEmail">Rewritten Email:</label>
             <textarea id="rewrittenEmail" readonly placeholder="Your rewritten email will appear here..."></textarea>
         </div>
-    </div> 
+    </div>
 
     <script>
-        // In your script
-        const API_KEY = import.meta.env.VITE_GROQ_API_KEY || process.env.GROQ_API_KEY;
-
         async function rewriteEmail() {
             const originalEmail = document.getElementById('originalEmail').value;
             const tone = document.getElementById('toneSelect').value;
@@ -123,77 +123,50 @@
             const errorMessage = document.getElementById('errorMessage');
             const rewrittenEmailArea = document.getElementById('rewrittenEmail');
             
-            // Input validation
             if (!originalEmail.trim()) {
                 alert('Please enter an email to rewrite.');
                 return;
             }
-
-            // Sanitize input to prevent XSS
-            const sanitizedEmail = DOMPurify.sanitize(originalEmail);
-            const sanitizedTone = DOMPurify.sanitize(tone);
 
             loadingIndicator.style.display = 'block';
             errorMessage.style.display = 'none';
             rewrittenEmailArea.value = '';
 
             try {
-                // Check if API key is available
-                if (!API_KEY) {
-                    throw new Error('API key is not configured');
-                }
-
-                // Use fetch with error handling
+                // Read API key from file
+                const response = await fetch('api_key');
+                const grokApi = await response.text();
                 const apiResponse = await fetch('https://api.groq.com/openai/v1/chat/completions', {
                     method: 'POST',
                     headers: {
-                        'Authorization': `Bearer ${API_KEY}`,
+                        'Authorization': `Bearer ${grokApi.trim()}`,
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
                         model: "mixtral-8x7b-32768",
                         messages: [{
                             role: "user",
-                            content: `Please rewrite the following email in a ${sanitizedTone} tone:\n\n${sanitizedEmail}`
+                            content: `Using British English, please rewrite the following email in a ${tone} tone:\n\n${originalEmail}`
                         }],
                         temperature: 0.7,
                         max_tokens: 2000
                     })
                 });
 
-                // Check for HTTP errors
-                if (!apiResponse.ok) {
-                    const errorBody = await apiResponse.text();
-                    throw new Error(`HTTP error! status: ${apiResponse.status}, ${errorBody}`);
-                }
-
                 const data = await apiResponse.json();
                 
                 if (data.choices && data.choices[0]) {
-                    // Sanitize output
-                    rewrittenEmailArea.value = DOMPurify.sanitize(
-                        data.choices[0].message.content.trim()
-                    );
+                    rewrittenEmailArea.value = data.choices[0].message.content.trim();
                 } else {
                     throw new Error('Invalid response from API');
                 }
             } catch (error) {
                 console.error('Error:', error);
-                errorMessage.textContent = `An error occurred: ${error.message}`;
                 errorMessage.style.display = 'block';
             } finally {
                 loadingIndicator.style.display = 'none';
             }
         }
-
-        // Add event listener for form submission
-        document.querySelector('form')?.addEventListener('submit', (e) => {
-            e.preventDefault();
-            rewriteEmail();
-        });
     </script>
-    
-    <!-- Add DOMPurify for input sanitization -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.10/purify.min.js"></script>
 </body>
 </html>
