@@ -136,8 +136,6 @@
                 <option value="passive aggressive">PassAgg</option>
                 <option value="hard boiled detective">Philip Marlowe</option>
                 <option value="dungeons and dragons">D&D</option>
-                <option value="meow like a cat">Meow</option>
-                <option value="one of T.S. Eliot's cats">Meow</option>
                 <option value="professional">Professional</option>
                 <option value="friendly">Friendly</option>
                 <option value="formal">Formal</option>
@@ -203,7 +201,7 @@
                         model: "mixtral-8x7b-32768",
                         messages: [{
                             role: "user",
-                            content: `Using British English, please rewrite the following email in a ${sanitizedTone} tone:\n\n${sanitizedEmail}`
+                            content: `Please rewrite the following email in a ${sanitizedTone} tone:\n\n${sanitizedEmail}`
                         }],
                         temperature: 0.7,
                         max_tokens: 2000
