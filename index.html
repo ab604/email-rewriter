@@ -119,38 +119,41 @@
             const loadingIndicator = document.getElementById('loadingIndicator');
             const errorMessage = document.getElementById('errorMessage');
             const rewrittenEmailArea = document.getElementById('rewrittenEmail');
-
+            
             if (!originalEmail.trim()) {
                 alert('Please enter an email to rewrite.');
                 return;
             }
-        
+
             loadingIndicator.style.display = 'block';
             errorMessage.style.display = 'none';
             rewrittenEmailArea.value = '';
-        
+
             try {
-                // Fetch API key from file
+                // Read API key from file
                 const response = await fetch('api_key');
-                const grokApi = await response.text().trim();
-            
-                // Alternative: Use a proxy server to handle API calls
-                const proxyResponse = await fetch('/api/rewrite', {
+                const grokApi = await response.text();
+                const apiResponse = await fetch('https://api.groq.com/openai/v1/chat/completions', {
                     method: 'POST',
                     headers: {
+                        'Authorization': `Bearer ${grokApi.trim()}`,
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        apiKey: grokApi,
-                        tone: tone,
-                        originalEmail: originalEmail
+                        model: "mixtral-8x7b-32768",
+                        messages: [{
+                            role: "user",
+                            content: `Please rewrite the following email in a ${tone} tone:\n\n${originalEmail}`
+                        }],
+                        temperature: 0.7,
+                        max_tokens: 2000
                     })
                 });
-            
-                const data = await proxyResponse.json();
 
-                if (data.rewrittenEmail) {
-                    rewrittenEmailArea.value = data.rewrittenEmail;
+                const data = await apiResponse.json();
+                
+                if (data.choices && data.choices[0]) {
+                    rewrittenEmailArea.value = data.choices[0].message.content.trim();
                 } else {
                     throw new Error('Invalid response from API');
                 }
@@ -161,7 +164,6 @@
                 loadingIndicator.style.display = 'none';
             }
         }
-
     </script>
 </body>
 </html>
