@@ -10,163 +10,41 @@
             max-width: 800px;
             margin: 0 auto;
             padding: 20px;
-            background-color: #f5f5f5;
         }
-
-        .container {
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        h1 {
-            color: #333;
-            text-align: center;
-        }
-
         textarea {
             width: 100%;
-            min-height: 200px;
+            height: 200px;
             margin: 10px 0;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            resize: vertical;
         }
-
-        .controls {
-            margin: 20px 0;
-        }
-
-        select, button {
-            padding: 8px 16px;
-            margin: 5px;
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
             border: none;
             border-radius: 4px;
             cursor: pointer;
         }
-
-        select {
-            background-color: white;
-            border: 1px solid #ddd;
+        button:disabled {
+            background-color: #cccccc;
         }
-
-        button {
-            background-color: #007bff;
-            color: white;
-            transition: background-color 0.3s;
-        }
-
-        button:hover {
-            background-color: #0056b3;
-        }
-
-        .loading {
+        #loading {
             display: none;
-            text-align: center;
             margin: 10px 0;
-        }
-
-        .error {
-            color: red;
-            margin: 10px 0;
-            display: none;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Email Rewriter</h1>
-        
-        <div>
-            <label for="originalEmail">Original Email:</label>
-            <textarea id="originalEmail" placeholder="Paste your email here..."></textarea>
-        </div>
-
-        <div class="controls">
-            <select id="toneSelect">
-                <option value="growth mindset">Growth Mindset</option>
-                <option value="passive aggressive">PassAgg</option>
-                <option value="hard boiled detective">Philip Marlowe</option>
-                <option value="victorian urchin">Victorian Urchin</option>
-                <option value="meow like a cat">Meow</option>
-                <option value="Mr. Mistoffelees">Cats</option>
-                <option value="dungeons and dragons">D&D</option>
-                <option value="professional">Professional</option>
-                <option value="friendly">Friendly</option>
-                <option value="formal">Formal</option>
-                <option value="casual">Casual</option>
-            </select>
-            <button onclick="rewriteEmail()">Rewrite Email</button>
-        </div>
-
-        <div class="loading" id="loadingIndicator">
-            Rewriting your email...
-        </div>
-
-        <div class="error" id="errorMessage">
-            An error occurred. Please try again.
-        </div>
-
-        <div>
-            <label for="rewrittenEmail">Rewritten Email:</label>
-            <textarea id="rewrittenEmail" readonly placeholder="Your rewritten email will appear here..."></textarea>
-        </div>
+    <h1>Email Rewriter</h1>
+    <div>
+        <h3>Original Email:</h3>
+        <textarea id="inputEmail" placeholder="Paste your email here..."></textarea>
     </div>
-
-    <script>
-        async function rewriteEmail() {
-            const originalEmail = document.getElementById('originalEmail').value;
-            const tone = document.getElementById('toneSelect').value;
-            const loadingIndicator = document.getElementById('loadingIndicator');
-            const errorMessage = document.getElementById('errorMessage');
-            const rewrittenEmailArea = document.getElementById('rewrittenEmail');
-            
-            if (!originalEmail.trim()) {
-                alert('Please enter an email to rewrite.');
-                return;
-            }
-
-            loadingIndicator.style.display = 'block';
-            errorMessage.style.display = 'none';
-            rewrittenEmailArea.value = '';
-
-            try {
-                // Read API key from file
-                const response = await fetch('api_key');
-                const grokApi = await response.text();
-                const apiResponse = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${grokApi.trim()}`,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        model: "mixtral-8x7b-32768",
-                        messages: [{
-                            role: "user",
-                            content: `Using British English, please rewrite the following email in a ${tone} tone:\n\n${originalEmail}`
-                        }],
-                        temperature: 0.7,
-                        max_tokens: 2000
-                    })
-                });
-
-                const data = await apiResponse.json();
-                
-                if (data.choices && data.choices[0]) {
-                    rewrittenEmailArea.value = data.choices[0].message.content.trim();
-                } else {
-                    throw new Error('Invalid response from API');
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                errorMessage.style.display = 'block';
-            } finally {
-                loadingIndicator.style.display = 'none';
-            }
-        }
-    </script>
+    <button id="rewriteBtn" onclick="rewriteEmail()">Rewrite Email</button>
+    <div id="loading">Processing...</div>
+    <div>
+        <h3>Rewritten Email:</h3>
+        <textarea id="outputEmail" readonly></textarea>
+    </div>
+    <script src="script.js"></script>
 </body>
 </html>
