@@ -6,7 +6,6 @@ export default {
             'Access-Control-Allow-Headers': 'Content-Type',
         };
 
-        // Handle CORS preflight
         if (request.method === 'OPTIONS') {
             return new Response(null, {
                 headers: corsHeaders
@@ -24,17 +23,13 @@ export default {
         }
 
         try {
-            // Validate request body
             const requestBody = await request.json();
             if (!requestBody.email) {
                 throw new Error('Email content is required');
             }
 
-            // Log for debugging (these will appear in Cloudflare Workers logs)
-            console.log('Received email content:', requestBody.email);
-            console.log('GROQ API Key present:', !!env.GROQ_API_KEY);
-
-            const groqResponse = await fetch('https://api.groq.com/v1/chat/completions', {
+            // Updated GROQ API endpoint URL
+            const groqResponse = await fetch('https://api.groq.com/openai/v1/chat/completions', {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${env.GROQ_API_KEY}`,
@@ -56,9 +51,6 @@ export default {
                     max_tokens: 1024,
                 })
             });
-
-            // Log GROQ API response status
-            console.log('GROQ API response status:', groqResponse.status);
 
             if (!groqResponse.ok) {
                 const errorText = await groqResponse.text();
