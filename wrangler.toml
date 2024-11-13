@@ -1,3 +1,4 @@
 name = "email-rewriter"
 main = "api/rewrite.js"
 compatibility_date = "2023-01-01"
+account_id = "64536266ef9ae1e68e23366a906b8660"

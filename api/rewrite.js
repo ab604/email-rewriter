@@ -1,17 +1,24 @@
 export default {
-    async fetch(request, env) {
+    async fetch(request, env, ctx) {
+        // Add CORS headers to handle preflight requests
+        const corsHeaders = {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'POST, OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+        };
+
+        // Handle OPTIONS request for CORS
         if (request.method === 'OPTIONS') {
             return new Response(null, {
-                headers: {
-                    'Access-Control-Allow-Origin': '*',
-                    'Access-Control-Allow-Methods': 'POST',
-                    'Access-Control-Allow-Headers': 'Content-Type',
-                }
+                headers: corsHeaders
             });
         }
 
         if (request.method !== 'POST') {
-            return new Response('Method not allowed', { status: 405 });
+            return new Response('Method not allowed', { 
+                status: 405,
+                headers: corsHeaders
+            });
         }
 
         try {
@@ -46,7 +53,7 @@ export default {
             return new Response(JSON.stringify({ rewrittenEmail }), {
                 headers: {
                     'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*',
+                    ...corsHeaders
                 }
             });
         } catch (error) {
@@ -54,7 +61,7 @@ export default {
                 status: 500,
                 headers: {
                     'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*',
+                    ...corsHeaders
                 }
             });
         }
