@@ -34,7 +34,7 @@ export default {
                 'passive aggressive': 'passive aggressive',
                 'hard boiled detective': 'hard boiled detective',
                 'melodramatic': '19th century melodramatic character',
-                'business': 'Ricky Gervais from the Office', 
+                'business': 'a character from the TV show The Office', 
                 'meow like a cat': 'Meow',
                 'pompous': 'Pompous',
                 'Mr. Mistoffelees': 'Mr. Mistoffelees', 
