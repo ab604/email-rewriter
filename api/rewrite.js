@@ -32,9 +32,9 @@ export default {
             const toneInstructions = {
                 'growth mindset': 'growth mindset',
                 'passive aggressive': 'passive aggressive',
-                'hard boiled detective': 'hard boiled detective',
+                'hard boiled detective': 'Raymond Chandlers Philip Marlowe',
                 'melodramatic': '19th century melodramatic character',
-                'business': 'a character from the TV show The Office', 
+                'business': 'jargon packed business email', 
                 'meow like a cat': 'Meow',
                 'pompous': 'Pompous',
                 'Mr. Mistoffelees': 'Mr. Mistoffelees', 
