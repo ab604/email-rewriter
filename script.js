@@ -14,7 +14,9 @@ async function rewriteEmail() {
         loading.style.display = 'block';
         outputEmail.value = '';
 
-        // Replace this URL with your Cloudflare Worker URL
+        // Log the request for debugging
+        console.log('Sending request to worker...');
+        
         const response = await fetch('https://email-rewriter.ab60454.workers.dev/', {
             method: 'POST',
             headers: {
@@ -23,15 +25,31 @@ async function rewriteEmail() {
             body: JSON.stringify({ email: inputEmail })
         });
 
+        // Log the response status
+        console.log('Response status:', response.status);
+
+        const responseText = await response.text();
+        console.log('Response text:', responseText);
+
         if (!response.ok) {
-            throw new Error('Failed to rewrite email');
+            throw new Error(`HTTP error! status: ${response.status}, body: ${responseText}`);
         }
 
-        const data = await response.json();
+        let data;
+        try {
+            data = JSON.parse(responseText);
+        } catch (e) {
+            throw new Error('Failed to parse JSON response: ' + responseText);
+        }
+
+        if (!data.rewrittenEmail) {
+            throw new Error('No rewritten email in response');
+        }
+
         outputEmail.value = data.rewrittenEmail;
     } catch (error) {
-        console.error('Error:', error);
-        alert('An error occurred while rewriting the email');
+        console.error('Detailed error:', error);
+        alert(`Error: ${error.message}`);
     } finally {
         rewriteBtn.disabled = false;
         loading.style.display = 'none';

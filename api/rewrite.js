@@ -1,13 +1,12 @@
 export default {
     async fetch(request, env, ctx) {
-        // Add CORS headers to handle preflight requests
         const corsHeaders = {
             'Access-Control-Allow-Origin': '*',
             'Access-Control-Allow-Methods': 'POST, OPTIONS',
-            'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+            'Access-Control-Allow-Headers': 'Content-Type',
         };
 
-        // Handle OPTIONS request for CORS
+        // Handle CORS preflight
         if (request.method === 'OPTIONS') {
             return new Response(null, {
                 headers: corsHeaders
@@ -15,14 +14,25 @@ export default {
         }
 
         if (request.method !== 'POST') {
-            return new Response('Method not allowed', { 
+            return new Response(JSON.stringify({ error: 'Method not allowed' }), {
                 status: 405,
-                headers: corsHeaders
+                headers: {
+                    'Content-Type': 'application/json',
+                    ...corsHeaders
+                }
             });
         }
 
         try {
-            const { email } = await request.json();
+            // Validate request body
+            const requestBody = await request.json();
+            if (!requestBody.email) {
+                throw new Error('Email content is required');
+            }
+
+            // Log for debugging (these will appear in Cloudflare Workers logs)
+            console.log('Received email content:', requestBody.email);
+            console.log('GROQ API Key present:', !!env.GROQ_API_KEY);
 
             const groqResponse = await fetch('https://api.groq.com/v1/chat/completions', {
                 method: 'POST',
@@ -39,7 +49,7 @@ export default {
                         },
                         {
                             role: 'user',
-                            content: email
+                            content: requestBody.email
                         }
                     ],
                     temperature: 0.7,
@@ -47,7 +57,22 @@ export default {
                 })
             });
 
+            // Log GROQ API response status
+            console.log('GROQ API response status:', groqResponse.status);
+
+            if (!groqResponse.ok) {
+                const errorText = await groqResponse.text();
+                console.error('GROQ API error:', errorText);
+                throw new Error(`GROQ API error: ${groqResponse.status} ${errorText}`);
+            }
+
             const groqData = await groqResponse.json();
+            
+            if (!groqData.choices || !groqData.choices[0] || !groqData.choices[0].message) {
+                console.error('Unexpected GROQ API response:', groqData);
+                throw new Error('Invalid response from GROQ API');
+            }
+
             const rewrittenEmail = groqData.choices[0].message.content;
 
             return new Response(JSON.stringify({ rewrittenEmail }), {
@@ -57,7 +82,11 @@ export default {
                 }
             });
         } catch (error) {
-            return new Response(JSON.stringify({ error: 'Failed to process request' }), {
+            console.error('Worker error:', error);
+            return new Response(JSON.stringify({ 
+                error: 'Failed to process request',
+                details: error.message
+            }), {
                 status: 500,
                 headers: {
                     'Content-Type': 'application/json',
