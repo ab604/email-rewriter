@@ -30,18 +30,19 @@ export default {
 
             // Create a prompt based on the selected tone
             const toneInstructions = {
-                'growth mindset': 'Growth Mindset',
-                'passive aggressive': 'PassAgg',
-                'hard boiled detective': 'Philip Marlowe',
-                'victorian urchin': 'Victorian Urchin',
+                'growth mindset': 'growth mindset',
+                'passive aggressive': 'passive aggressive',
+                'hard boiled detective': 'hard boiled detective',
+                'melodramatic': '19th century melodramatic character',
+                'business' : 'Ricky Gervais from the Office', 
                 'meow like a cat': 'Meow',
                 'pompous': 'Pompous',
                 'Mr. Mistoffelees': 'Mr. Mistoffelees', 
-                'dungeons and dragons': 'D&D',
-                'professional': 'Professional', 
-                'friendly': 'Friendly', 
-                'formal': 'Formal', 
-                'casual': 'Casual'  
+                'dungeons and dragons': 'dungeons and dragons',
+                'professional': 'professional', 
+                'friendly': 'friendly', 
+                'formal': 'formal', 
+                'casual': 'casual'  
             };
 
             const toneInstruction = toneInstructions[requestBody.tone] //|| toneInstructions.professional;
@@ -59,16 +60,6 @@ export default {
                         role: "user",
                         content: `Using British English, rewrite the following email in a ${toneInstruction} tone:\n\n${requestBody.email}`
                     }],
-                    // messages: [
-                        // {
-                            // role: 'system',
-                            // content: `You are a professional email editor. ${toneInstruction}`
-                        // },
-                        // {
-                            // role: 'user',
-                            // content: requestBody.email
-                        // }
-                    // ],
                     temperature: 0.7,
                     max_tokens: 2000,
                 })
