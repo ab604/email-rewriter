@@ -32,7 +32,7 @@ export default {
             const toneInstructions = {
                 'growth mindset': 'growth mindset',
                 'passive aggressive': 'passive aggressive',
-                'hard boiled detective': 'Raymond Chandlers Philip Marlowe',
+                'hard boiled detective': 'hard boiled detective',
                 'melodramatic': '19th century melodramatic character',
                 'business': 'jargon packed business email', 
                 'meow like a cat': 'Meow',
