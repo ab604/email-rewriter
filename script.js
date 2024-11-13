@@ -3,6 +3,7 @@ async function rewriteEmail() {
     const outputEmail = document.getElementById('outputEmail');
     const rewriteBtn = document.getElementById('rewriteBtn');
     const loading = document.getElementById('loading');
+    const toneSel = document.getElementById('toneSelect').value;
 
     if (!inputEmail.trim()) {
         alert('Please enter an email to rewrite');
@@ -22,7 +23,10 @@ async function rewriteEmail() {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ email: inputEmail })
+            body: JSON.stringify({ 
+                email: inputEmail , 
+                tone: toneSel 
+            })
         });
 
         // Log the response status

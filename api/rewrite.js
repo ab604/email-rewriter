@@ -28,6 +28,24 @@ export default {
                 throw new Error('Email content is required');
             }
 
+            // Create a prompt based on the selected tone
+            const toneInstructions = {
+                'growth mindset': 'Growth Mindset',
+                'passive aggressive': 'PassAgg',
+                'hard boiled detective': 'Philip Marlowe',
+                'victorian urchin': 'Victorian Urchin',
+                'meow like a cat': 'Meow',
+                'pompous': 'Pompous',
+                'Mr. Mistoffelees': 'Mr. Mistoffelees', 
+                'dungeons and dragons': 'D&D',
+                'professional': 'Professional', 
+                'friendly': 'Friendly', 
+                'formal': 'Formal', 
+                'casual': 'Casual'  
+            };
+
+            const toneInstruction = toneInstructions[requestBody.tone] //|| toneInstructions.professional;
+
             // Updated GROQ API endpoint URL
             const groqResponse = await fetch('https://api.groq.com/openai/v1/chat/completions', {
                 method: 'POST',
@@ -37,18 +55,22 @@ export default {
                 },
                 body: JSON.stringify({
                     model: 'mixtral-8x7b-32768',
-                    messages: [
-                        {
-                            role: 'system',
-                            content: 'You are a professional email editor. Rewrite the following email to be more professional and effective while maintaining the same message.'
-                        },
-                        {
-                            role: 'user',
-                            content: requestBody.email
-                        }
-                    ],
+                    messages: [{
+                        role: "user",
+                        content: `Using British English, rewrite the following email in a ${toneInstruction} tone:\n\n${requestBody.email}`
+                    }],
+                    // messages: [
+                        // {
+                            // role: 'system',
+                            // content: `You are a professional email editor. ${toneInstruction}`
+                        // },
+                        // {
+                            // role: 'user',
+                            // content: requestBody.email
+                        // }
+                    // ],
                     temperature: 0.7,
-                    max_tokens: 1024,
+                    max_tokens: 2000,
                 })
             });
 

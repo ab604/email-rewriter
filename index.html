@@ -17,6 +17,17 @@
             height: 200px;
             margin: 10px 0;
         }
+        .controls {
+            margin: 20px 0;
+        }
+        select {
+            padding: 8px;
+            font-size: 16px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            margin-left: 10px;
+        }
+
         button {
             padding: 10px 20px;
             background-color: #007bff;
@@ -40,7 +51,23 @@
         <h3>Original Email:</h3>
         <textarea id="inputEmail" placeholder="Paste your email here..."></textarea>
     </div>
+    <div class="controls">
+        <select id="toneSelect">
+            <option value="growth mindset">Growth Mindset</option>
+            <option value="passive aggressive">PassAgg</option>
+            <option value="hard boiled detective">Philip Marlowe</option>
+            <option value="victorian urchin">Victorian Urchin</option>
+            <option value="meow like a cat">Meow</option>
+            <option value="pompous">Pompous</option>
+            <option value="Mr. Mistoffelees">Mr. Mistoffelees</option>
+            <option value="dungeons and dragons">D&D</option>
+            <option value="professional">Professional</option>
+            <option value="friendly">Friendly</option>
+            <option value="formal">Formal</option>
+            <option value="casual">Casual</option>
+        </select>
     <button id="rewriteBtn" onclick="rewriteEmail()">Rewrite Email</button>
+    </div>
     <div id="loading">Processing...</div>
     <div>
         <h3>Rewritten Email:</h3>
