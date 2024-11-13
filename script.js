@@ -14,7 +14,8 @@ async function rewriteEmail() {
         loading.style.display = 'block';
         outputEmail.value = '';
 
-        const response = await fetch('api/rewrite', {
+        // Replace this URL with your Cloudflare Worker URL
+        const response = await fetch('https://email-rewriter.ab60454.workers.dev/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
