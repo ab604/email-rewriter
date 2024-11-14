@@ -5,25 +5,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Serif:ital,opsz,wght@0,8..144,100..900;1,8..144,100..900&Azeret+Mono:ital,wght@0,100..900;1,100..900&family=Inter+Tight:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Serif:ital,opsz,wght@0,8..144,100..900;1,8..144,100..900&family=Pacifico&family=Ga+Maamli&Azeret+Mono:ital,wght@0,100..900;1,100..900&family=Inter+Tight:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <base href="{{ site.baseurl }}">
     <title>Email Rewriter</title>
     <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+        }
+        
+        .container { 
+            width: 100vw;  /* Use viewport width */
+            margin-left: calc(-50vw + 50%);  /* Center the container */
+            background-color: #f3f3da;
+            position: relative;  /* Ensure proper positioning */
+            top: -20px;  /* Counteract body's top padding */
+            margin-bottom: -20px;  /* Prevent layout shifts */
+        }
+        
+        body {
+            font-family: 'Inter Tight', sans-serif;
+            max-width: 100%;  /* Constrain body content width */
+            margin: 0 auto;    /* Center the body content */
+            padding: 20px;     /* Add padding around the content */
+        }
+
+
         .page-header {
-            display: flex;
+            display: flex auto; 
             align-items: center;
             justify-content: space-between;
+            padding: 20px; /* Add some padding to the header */
         }
 
-        body {
-            font-family: 'Inter+Tight', sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
+        h1 {
+            font-family: 'Pacifico';
+            color: #d94d99;
+            font-size: 3rem;
         }
 
-        h1, h3 {
+        h3 {
             font-family: 'Roboto Serif', serif;
+            color: #d94d99;
         }
 
         textarea {
@@ -32,11 +55,13 @@
             height: 200px;
             margin: 10px 0;
         }
+
         .controls {
             margin: 20px 0;
         }
+
         select {
-            font-family: 'Inter+Tight', sans-serif;
+            font-family: 'Inter Tight', sans-serif;
             color: black;
             padding: 10px;
             /* font-size: 16px; */
@@ -46,17 +71,19 @@
         }
 
         button {
-            font-family: 'Inter+Tight', sans-serif;
-            padding: 10px 20px;
-            background-color: #007bff;
+            font-family: 'Inter Tight', sans-serif;
+            padding: 10px;
+            background-color: #202d85;
             color: white;
             border: none;
             border-radius: 4px;
             cursor: pointer;
         }
+
         button:disabled {
             background-color: #cccccc;
         }
+
         #loading {
             display: none;
             margin: 10px 0;
@@ -102,7 +129,7 @@
         }
 
         input:checked + .slider  {
-            background-color: #2196F3;
+            background-color: #202d85;
         }
 
         input:checked + .slider:before {
@@ -115,12 +142,12 @@
 
         /* Dark mode styles */
         body.dark-mode {
-            background-color: #121212;
+            background-color: #121517;
             color: #e0e0e0;
         }
 
-        body.dark-mode .container {
-            background-color: #121212;
+        .dark-mode .container {
+            background-color: #1f1f1f;
         }
 
         .dark-mode textarea {
@@ -129,8 +156,8 @@
             border: 1px solid #555;
         }
 
-        body.dark-mode h1 {
-            color: #e0e0e0;
+        body.dark-mode h1, body.dark-mode h3 {
+            color: #f5f5b8;
         }
         /* Dark mode link colors */
         body.dark-mode a {
@@ -143,7 +170,6 @@
             color: #ffffff;
             text-decoration: underline;
         }
-
     </style>
 </head>
 <body>
@@ -158,8 +184,9 @@
         <h1>Email Rewriter</h1>
         </div>
     </div>
-    <p>Enter the email you want to rewrite and select a tone from the dropdown.
-        Chat LLM Mixtral-8x7b via <a href="http://console.groq.com/" target="_blank">groq</a> will be used to rewrite the email.
+    <p>This is obviously just a bit of fun. Don't put sensitive information in and I take no responsibility for the consequences if you choose to use the output!</p>
+    <p> Enter the email you want to rewrite and select a tone from the dropdown.
+        Chat LLM Mixtral-8x7b via <a href="http://console.groq.com/" target="_blank">groq</a> will be used to rewrite the email in the tone of voice selected.
     </p>
     <div>
         <h3>Original Email:</h3>
