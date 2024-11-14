@@ -31,7 +31,7 @@ export default {
             // Create a prompt based on the selected tone
             const toneInstructions = {
                 'growth mindset': 'growth mindset',
-                'passive aggressive': 'passive aggressive',
+                'passive aggressive': 'passive aggressive and judgemental',
                 // 'hard boiled detective': 'an american hard boiled detective',
                 'melodramatic': '19th century melodramatic character',
                 'business': 'jargon packed business email', 
