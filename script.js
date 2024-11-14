@@ -59,3 +59,16 @@ async function rewriteEmail() {
         loading.style.display = 'none';
     }
 }
+
+function copyEmail() {
+    const rewrittenEmailArea = document.getElementById('outputEmail');
+    navigator.clipboard.writeText(rewrittenEmailArea.value);
+    alert('Email copied to clipboard!');
+}
+
+const darkModeToggle = document.getElementById('darkModeToggle');
+const body = document.body;
+
+darkModeToggle.addEventListener('change', () => {
+  body.classList.toggle('dark-mode');
+});
