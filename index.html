@@ -19,15 +19,17 @@
             margin-left: calc(-50vw + 50%);  /* Center the container */
             background-color: #f3f3da;
             position: relative;  /* Ensure proper positioning */
-            top: -20px;  /* Counteract body's top padding */
-            margin-bottom: -20px;  /* Prevent layout shifts */
+            top: -30px;  /* Counteract body's top padding */
+            margin-bottom: -50px;  /* Prevent layout shifts */
         }
         
         body {
             font-family: 'Inter Tight', sans-serif;
-            max-width: 100%;  /* Constrain body content width */
+            max-width: 80%;  /* Constrain body content width */
             margin: 0 auto;    /* Center the body content */
-            padding: 20px;     /* Add padding around the content */
+            padding-top: 2px;
+            padding-left: 20px;
+            padding-right: 20px;     /* Add padding around the content */
         }
 
 
@@ -35,7 +37,10 @@
             display: flex auto; 
             align-items: center;
             justify-content: space-between;
-            padding: 20px; /* Add some padding to the header */
+            padding-top: 1px;
+            /* padding-right: 20px; */
+            padding-bottom: 0px;
+            padding-left: 10%;
         }
 
         h1 {
@@ -57,7 +62,7 @@
         }
 
         .controls {
-            margin: 20px 0;
+            margin: 0px 0;
         }
 
         select {
@@ -95,7 +100,7 @@
             display: inline-block;
             width: 36px;
             height: 24px;
-            margin-right: 10px;
+            margin-right: 20px;
         }
 
         .switch input {
