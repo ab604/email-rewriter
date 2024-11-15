@@ -19,8 +19,8 @@
             margin-left: calc(-50vw + 50%);  /* Center the container */
             background-color: #f3f3da;
             position: relative;  /* Ensure proper positioning */
-            top: -30px;  /* Counteract body's top padding */
-            margin-bottom: -50px;  /* Prevent layout shifts */
+            top: -20px;  /* Counteract body's top padding */
+            margin-bottom: -20px;  /* Prevent layout shifts */
         }
         
         body {
@@ -39,7 +39,7 @@
             justify-content: space-between;
             padding-top: 1px;
             /* padding-right: 20px; */
-            padding-bottom: 0px;
+            padding-bottom: 1px;
             padding-left: 10%;
         }
 
@@ -186,11 +186,11 @@
                     <span class="slider"></span>
                 </label>
             </div>
-        <h1>Email Rewriter</h1>
+        <h1>I don't like your tone...an email rewriter</h1>
         </div>
     </div>
     <p>This is obviously just a bit of fun. Don't put sensitive information in and I take no responsibility for the consequences if you choose to use the output!</p>
-    <p> Enter the email you want to rewrite and select a tone from the dropdown.
+    <p>Compose or paste the email you want to rewrite in an annoying manner, select a tone from the dropdown and press the button. Et voilà.
         Chat LLM Mixtral-8x7b via <a href="http://console.groq.com/" target="_blank">groq</a> will be used to rewrite the email in the tone of voice selected.
     </p>
     <div>
@@ -221,7 +221,7 @@
         <textarea id="outputEmail" placeholder="Rewritten email will appear here..." readonly></textarea>
     </div>
     <button id="copyBtn" onclick="copyEmail()">Copy to Clipboard</button>
-    <p>Github repo: <a href="https://github.com/ab604/email-rewriter" target="_blank">https://github.com/ab604/email-rewriter</a></p>
+    <p>Made by: <a href="https:ab604.uk" target="_blank">ab604.uk</a> | Github repo: <a href="https://github.com/ab604/email-rewriter" target="_blank">https://github.com/ab604/email-rewriter</a></p>
     <script src="script.js"></script>
 </body>
 </html>
