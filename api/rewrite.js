@@ -34,7 +34,7 @@ export default {
                 'passive aggressive': 'passive aggressive and judgemental',
                 // 'hard boiled detective': 'an american hard boiled detective',
                 'melodramatic': '19th century melodramatic character',
-                'gordon ramsey': 'angry and swearing',
+                'angry and sweary': 'angry and swearing',
                 'business': 'jargon packed business email', 
                 'meow': 'Meow',
                 'pompous': 'pompous',
