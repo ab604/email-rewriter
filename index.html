@@ -26,8 +26,8 @@
             margin: 0;
             padding: 0;
         }
-        
-        .container { 
+
+        .container {
             width: 100vw;  /* Use viewport width */
             margin-left: calc(-50vw + 50%);  /* Center the container */
             background-color: #f3f3da;
@@ -35,7 +35,7 @@
             top: -20px;  /* Counteract body's top padding */
             margin-bottom: -20px;  /* Prevent layout shifts */
         }
-        
+
         body {
             font-family: 'Inter Tight', sans-serif;
             max-width: 80%;  /* Constrain body content width */
@@ -47,7 +47,7 @@
 
 
         .page-header {
-            display: flex auto; 
+            display: flex auto;
             align-items: center;
             justify-content: space-between;
             padding-top: 1px;
@@ -67,7 +67,7 @@
             color: #d94d99;
         }
 
-        a { 
+        a {
             color: #0024cc;
             text-decoration: none;
         }
@@ -75,7 +75,7 @@
         a:hover {
             color: #d94d99;
             text-decoration: underline;
-        } 
+        }
 
         textarea {
             font-family: 'Azeret+Mono', monospace;
@@ -162,11 +162,11 @@
 
         input:checked + .slider:before {
             transform: translateX(13px);
-        } 
+        }
 
         input:checked + .slider:after {
             transform: translateX(13px);
-        } 
+        }
 
         /* Dark mode styles */
         body.dark-mode {
@@ -209,12 +209,12 @@
                     <span class="slider"></span>
                 </label>
             </div>
-        <h1>I don't like your tone...an email rewriter</h1> 
+        <h1>I don't like your tone...an email rewriter</h1>
         </div>
     </div>
     <p>This is obviously just a bit of fun. Don't use it to be mean. And don't put any sensitive information in. I take no responsibility for the consequences of actually using the output.</p>
     <p>Compose or paste the email you want to rewrite in an annoying manner, select a tone from the dropdown and press the button. Et voilà!<br>
-        Chat LLM Mixtral-8x7b via <a href="http://console.groq.com/" target="_blank">groq</a> will be used to rewrite the email in the tone of voice selected.
+        Chat LLM mistral-saba-24b via <a href="http://console.groq.com/" target="_blank">groq</a> will be used to rewrite the email in the tone of voice selected.
     </p>
     <div>
         <h3>Original Email:</h3>
