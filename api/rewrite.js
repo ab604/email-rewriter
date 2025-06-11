@@ -35,15 +35,15 @@ export default {
                 // 'hard boiled detective': 'an american hard boiled detective',
                 'melodramatic': '19th century melodramatic character',
                 'angry and sweary': 'angry and swearing',
-                'business': 'jargon packed business email', 
+                'business': 'jargon packed business email',
                 'meow': 'Meow',
                 'pompous': 'pompous',
-                // 'Mr. Mistoffelees': 'Mr. Mistoffelees', 
+                // 'Mr. Mistoffelees': 'Mr. Mistoffelees',
                 'dungeons and dragons': 'dungeons and dragons',
-                'professional': 'professional', 
-                'friendly': 'friendly', 
-                'formal': 'formal', 
-                'casual': 'casual'  
+                'professional': 'professional',
+                'friendly': 'friendly',
+                'formal': 'formal',
+                'casual': 'casual'
             };
 
             const toneInstruction = toneInstructions[requestBody.tone] //|| toneInstructions.professional;
@@ -56,7 +56,7 @@ export default {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    model: 'mixtral-8x7b-32768',
+                    model: 'mmistral-saba-24b',
                     messages: [{
                         role: "user",
                         content: `Using British English, rewrite the following email in a ${toneInstruction} tone:\n\n${requestBody.email}`
@@ -73,7 +73,7 @@ export default {
             }
 
             const groqData = await groqResponse.json();
-            
+
             if (!groqData.choices || !groqData.choices[0] || !groqData.choices[0].message) {
                 console.error('Unexpected GROQ API response:', groqData);
                 throw new Error('Invalid response from GROQ API');
@@ -89,7 +89,7 @@ export default {
             });
         } catch (error) {
             console.error('Worker error:', error);
-            return new Response(JSON.stringify({ 
+            return new Response(JSON.stringify({
                 error: 'Failed to process request',
                 details: error.message
             }), {
