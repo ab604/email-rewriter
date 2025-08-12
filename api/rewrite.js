@@ -56,7 +56,7 @@ export default {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    model: 'mistral-saba-24b',
+                    model: 'qwen/qwen3-32b',
                     messages: [{
                         role: "user",
                         content: `Using British English, rewrite the following email in a ${toneInstruction} tone:\n\n${requestBody.email}`
