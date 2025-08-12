@@ -59,7 +59,7 @@ export default {
                     model: 'qwen/qwen3-32b',
                     messages: [{
                         role: "user",
-                        content: `Using British English, rewrite the following email in a ${toneInstruction} tone:\n\n${requestBody.email}`
+                        content: `Using British English, rewrite the following email in a ${toneInstruction} tone:\n\n${requestBody.email}. Only return the text of the email, no chain of thought.`
                     }],
                     temperature: 0.7,
                     max_tokens: 2000,
