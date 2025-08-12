@@ -56,7 +56,7 @@ export default {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    model: 'qwen/qwen3-32b',
+                    model: 'meta-llama/llama-4-scout-17b-16e-instruct',
                     messages: [
                         {
                             role: "system",
@@ -69,7 +69,6 @@ export default {
                     ],
                     temperature: 0.7,
                     max_tokens: 2000,
-                    stop: ["<think>", "Let me", "I'll", "Here's", "The rewritten"]
                 })
             });
 
