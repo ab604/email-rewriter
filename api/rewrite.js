@@ -57,10 +57,16 @@ export default {
                 },
                 body: JSON.stringify({
                     model: 'qwen/qwen3-32b',
-                    messages: [{
-                        role: "user",
-                        content: `Using British English, rewrite the following email in a ${toneInstruction} tone:\n\n${requestBody.email}. Only return the text of the email, no chain of thought.`
-                    }],
+                    messages: [
+                        {
+                            role: "system",
+                            content: "You are an email rewriter. Respond ONLY with the rewritten email text. Do not include any explanations, reasoning, or additional commentary."
+                        },
+                        {
+                            role: "user",
+                            content: `Using British English, rewrite the following email in a ${toneInstruction} tone:\n\n${requestBody.email}`
+                        }
+                    ],
                     temperature: 0.7,
                     max_tokens: 2000,
                 })
