@@ -69,6 +69,7 @@ export default {
                     ],
                     temperature: 0.7,
                     max_tokens: 2000,
+                    stop: ["<think>", "Let me", "I'll", "Here's", "The rewritten"]
                 })
             });
 
